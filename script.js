@@ -10,6 +10,11 @@ document.addEventListener("DOMContentLoaded", () => {
   if (historyButton) {
     historyButton.addEventListener("click", toggleHistoryModal);
   }
+  // Attach event listener to Download History button
+  const downloadHistoryButton = document.getElementById("downloadHistory");
+  if (downloadHistoryButton) {
+    downloadHistoryButton.addEventListener("click", downloadHistory);
+  }
   // Close history modal when clicking outside the content
   const historyModal = document.getElementById("historyModal");
   if (historyModal) {
@@ -64,8 +69,8 @@ function addClickHistory(query, url) {
 }
 function displayHistory() {
   const historyModalContent = document.getElementById("historyContent");
-  const history = loadSearchHistory();
   historyModalContent.innerHTML = "<h2>Search History</h2>";
+  const history = loadSearchHistory();
   if (history.length === 0) {
     historyModalContent.innerHTML += "<p>No history available.</p>";
     return;
@@ -89,6 +94,19 @@ function toggleHistoryModal() {
     displayHistory();
     historyModal.classList.add("active");
   }
+}
+
+/* ========= Download History Function ========= */
+function downloadHistory() {
+  const history = loadSearchHistory();
+  const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(history, null, 2));
+  const dlAnchorElem = document.createElement("a");
+  dlAnchorElem.setAttribute("href", dataStr);
+  dlAnchorElem.setAttribute("download", "search_history.json");
+  dlAnchorElem.style.display = "none";
+  document.body.appendChild(dlAnchorElem);
+  dlAnchorElem.click();
+  document.body.removeChild(dlAnchorElem);
 }
 
 /* ========= Fetch Total URLs ========= */
