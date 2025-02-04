@@ -18,6 +18,7 @@ document.addEventListener("DOMContentLoaded", () => {
         toggleHistoryModal();
       }
     });
+  }
 });
 
 const resultsPerPage = 25;
