@@ -111,6 +111,7 @@ header {
   color: #fff;
   cursor: pointer;
   transition: background-color 0.3s ease;
+  font-family: 'Poppins', sans-serif;
 }
 
 #historyButton:hover {
@@ -174,7 +175,7 @@ header {
 }
 
 .search-bar input {
-  width: 60%;
+  width: 100%;
   max-width: 400px;
   padding: 0.5rem;
   font-size: 1rem;
