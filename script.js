@@ -224,9 +224,11 @@ function displayResults() {
         <h3><a href="${result.url}" target="_blank">${result.title}</a></h3>
         <p style="font-size:0.8rem;">${result.url}</p>
         <div class="result-meta">
-          <p>MIME Type: ${result.mime_type}</p>
-          <p>Images: ${result.image_count}</p>
-          <p>Links: ${result.link_count}</p>
+          <div class="meta-mime">MIME Type: ${result.mime_type}</div>
+          <div class="meta-others">
+            <span>Images: ${result.image_count}</span>
+            <span>Links: ${result.link_count}</span>
+          </div>
         </div>
       </div>
     `;
