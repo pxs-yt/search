@@ -37,17 +37,10 @@ body {
   color: var(--text-color);
   line-height: 1.6;
   transition: background-color 0.3s ease, color 0.3s ease;
-  margin: 0;
-  padding: 0;
-}
-
-/* Wrapper with equal left and right spacing */
-.wrapper {
-  max-width: 1200px;
-  width: calc(100% - 40px); /* Adds equal spacing on both sides */
   margin: 0 auto;
   padding-left: 20px;
   padding-right: 20px;
+  width: calc(100% - 40px); /* Adds equal spacing on both sides */
 }
 
 /* Header */
@@ -280,4 +273,7 @@ header {
 }
 .download-history:hover {
   background-color: var(--pagination-button-hover);
+}
+html, body {
+  overflow-x: hidden;
 }
