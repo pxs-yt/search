@@ -1,27 +1,72 @@
 /* Import Google Fonts */
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap');
 
-/* General Styles */
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
+/* Define CSS variables for light mode */
+:root {
+  --background-color: #f8f5f2;
+  --text-color: #000;
+  --header-background: #101524;
+  --header-text: #fff;
+  --input-border: #6b759733;
+  --result-background: #fff;
+  --result-border: #e3cccbb3;
+  --result-text: #101524;
+  --result-hover-shadow: rgba(0, 0, 0, 0.15);
+  --pagination-button-background: #101524;
+  --pagination-button-hover: #455273;
+}
+
+/* Dark mode overrides when body.dark-mode is active */
+body.dark-mode {
+  --background-color: #181818;
+  --text-color: #e0e0e0;
+  --header-background: #202020;
+  --header-text: #f8f5f2;
+  --input-border: #555;
+  --result-background: #2c2c2c;
+  --result-border: #444;
+  --result-text: #e0e0e0;
+  --result-hover-shadow: rgba(0, 0, 0, 0.5);
+  --pagination-button-background: #202020;
+  --pagination-button-hover: #555;
 }
 
 body {
   font-family: 'Poppins', sans-serif;
-  background-color: #f8f5f2;
-  color: #000;
+  background-color: var(--background-color);
+  color: var(--text-color);
   line-height: 1.6;
+  transition: background-color 0.3s ease, color 0.3s ease;
 }
 
 header {
-  background-color: #101524;
-  color: #fff;
+  background-color: var(--header-background);
+  color: var(--header-text);
   text-align: center;
   padding: 1rem;
   border-radius: 0 0 10px 10px;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+  position: relative;
+}
+
+/* Dark Mode Toggle Button */
+.dark-mode-toggle {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background-color: var(--header-background);
+  color: var(--header-text);
+  border: 1px solid var(--header-text);
+  border-radius: 5px;
+  padding: 5px 10px;
+  cursor: pointer;
+  font-size: 0.9rem;
+  transition: background-color 0.3s ease;
+  -webkit-transition: background-color 0.3s ease;
+}
+
+.dark-mode-toggle:hover {
+  background-color: var(--pagination-button-hover);
 }
 
 /* Search Bar */
@@ -36,7 +81,7 @@ header {
   max-width: 600px;
   padding: 0.75rem;
   font-size: 1rem;
-  border: 1px solid #6b759733;
+  border: 1px solid var(--input-border);
   border-radius: 25px;
   outline: none;
   transition: border-color 0.3s ease, box-shadow 0.3s ease;
@@ -44,7 +89,7 @@ header {
 }
 
 .search-bar input:focus {
-  border-color: #101524;
+  border-color: var(--header-background);
   box-shadow: 0 0 8px rgba(16, 21, 36, 0.2);
   -webkit-box-shadow: 0 0 8px rgba(16, 21, 36, 0.2);
 }
@@ -57,21 +102,21 @@ header {
   margin-top: 5px;
 }
 
-/* Container for Search Results */
+/* Container for search results */
 .container {
   padding: 1rem;
 }
 
-/* Search Result Box with Favicon and Structured Layout */
+/* Search result item box with favicon and structured layout */
 .result-item {
   display: flex;
   align-items: center;
   gap: 12px;
   padding: 10px;
-  background-color: #fff;
-  border: 1px solid #e3cccbb3;
+  background-color: var(--result-background);
+  border: 1px solid var(--result-border);
   border-radius: 10px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
   transition: transform 0.2s ease, box-shadow 0.2s ease;
   -webkit-transition: -webkit-transform 0.2s ease, box-shadow 0.2s ease;
   margin-bottom: 0.75rem;
@@ -80,8 +125,8 @@ header {
 .result-item:hover {
   transform: translateY(-3px);
   -webkit-transform: translateY(-3px);
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
-  -webkit-box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+  box-shadow: 0 4px 10px var(--result-hover-shadow);
+  -webkit-box-shadow: 0 4px 10px var(--result-hover-shadow);
 }
 
 /* Favicon styling */
@@ -91,43 +136,46 @@ header {
   flex-shrink: 0;
 }
 
-/* Content of each result */
+/* Result content */
 .result-content {
   flex-grow: 1;
 }
 
 .result-content h3 {
-  font-size: 1.2rem;
-  color: #101524;
+  font-size: clamp(1rem, 2vw, 1.2rem);
+  color: var(--result-text);
   margin-bottom: 3px;
+  overflow-wrap: break-word;
 }
 
 .result-content a {
-  color: #101524;
+  color: var(--result-text);
   text-decoration: none;
   font-weight: bold;
   display: block;
 }
 
 .result-content a:hover {
-  color: #455273;
+  color: var(--pagination-button-hover);
 }
 
+/* Metadata styling */
 .result-meta {
   font-size: 0.85rem;
   color: #666;
   margin-top: 5px;
 }
 
-/* Pagination */
+/* Pagination (new design) */
 .pagination {
   text-align: center;
   margin-top: 1rem;
 }
 
+/* All pagination buttons share these styles */
 .pagination button {
-  background-color: #101524;
-  color: white;
+  background-color: var(--pagination-button-background);
+  color: #fff;
   border: none;
   padding: 8px 12px;
   margin: 2px;
@@ -139,7 +187,7 @@ header {
 }
 
 .pagination button:hover {
-  background-color: #455273;
+  background-color: var(--pagination-button-hover);
 }
 
 .pagination button:disabled {
