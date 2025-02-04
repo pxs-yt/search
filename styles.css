@@ -42,7 +42,7 @@ body {
   width: 100%;
 }
 
-/* Header */
+/* HEADER STYLING */
 header {
   background-color: var(--header-background);
   color: var(--header-text);
@@ -50,8 +50,71 @@ header {
   width: 100%;
   padding: 1rem;
   border-radius: 0 0 10px 10px;
-  box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
   position: relative;
+}
+
+/* Header Container */
+.header-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 15px;
+}
+
+/* Logo & Title */
+.logo-title {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+/* Search Engine Title */
+.logo-title h1 {
+  font-size: 1.5rem;
+  margin: 0;
+}
+
+/* Total URLs Label */
+.total-urls-label {
+  font-size: 0.85rem;
+  color: #bbb;
+  margin-top: 4px;
+}
+
+/* Header Controls (Dark Mode, Filter, History Button) */
+.header-controls {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+/* MIME Type Dropdown */
+#mimeFilter {
+  padding: 5px 10px;
+  font-size: 0.9rem;
+  border: 1px solid var(--input-border);
+  border-radius: 5px;
+  background: var(--result-background);
+  color: var(--text-color);
+}
+
+/* History Button */
+#historyButton {
+  padding: 5px 12px;
+  font-size: 0.9rem;
+  border: none;
+  border-radius: 5px;
+  background-color: var(--pagination-button-background);
+  color: #fff;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+#historyButton:hover {
+  background-color: var(--pagination-button-hover);
 }
 
 /* iOS‑like Dark Mode Toggle Switch */
@@ -63,9 +126,11 @@ header {
   width: 50px;
   height: 28px;
 }
+
 .switch input {
   display: none;
 }
+
 .slider {
   position: absolute;
   cursor: pointer;
@@ -77,6 +142,7 @@ header {
   bottom: 0;
   transition: .4s;
 }
+
 .slider:before {
   position: absolute;
   content: "";
@@ -88,9 +154,11 @@ header {
   border-radius: 50%;
   transition: .4s;
 }
+
 .switch input:checked + .slider {
   background-color: var(--pagination-button-background);
 }
+
 .switch input:checked + .slider:before {
   transform: translateX(22px);
 }
@@ -104,6 +172,7 @@ header {
   margin: 1rem 0;
   padding: 0 10px;
 }
+
 .search-bar input {
   width: 60%;
   max-width: 400px;
@@ -114,17 +183,10 @@ header {
   outline: none;
   transition: border-color 0.3s ease, box-shadow 0.3s ease;
 }
+
 .search-bar input:focus {
   border-color: var(--header-background);
   box-shadow: 0 0 8px rgba(16, 21, 36, 0.2);
-}
-
-/* Total URLs Label */
-.total-urls-label {
-  text-align: center;
-  font-size: 0.9rem;
-  color: #777;
-  margin-top: 5px;
 }
 
 /* Results Info Message */
@@ -143,11 +205,12 @@ header {
   background-color: var(--result-background);
   border: 1px solid var(--result-border);
   border-radius: 8px;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   transition: transform 0.2s ease, box-shadow 0.2s ease;
   margin-bottom: 0.5rem;
   width: 100%;
 }
+
 .result-item:hover {
   transform: translateY(-3px);
   box-shadow: 0 4px 10px var(--result-hover-shadow);
@@ -165,12 +228,14 @@ header {
 .result-content {
   flex-grow: 1;
 }
+
 .result-content h3 {
   font-size: clamp(0.9rem, 2vw, 1rem);
   color: var(--result-text);
   margin: 0 0 2px 0; /* Reduced vertical spacing */
   overflow-wrap: break-word;
 }
+
 .result-content a {
   color: var(--result-text);
   text-decoration: none;
@@ -178,6 +243,7 @@ header {
   font-size: 0.9rem;
   display: block;
 }
+
 .result-content a:hover {
   color: var(--pagination-button-hover);
 }
@@ -187,11 +253,13 @@ header {
   margin-top: 2px;
   line-height: 1.2;
 }
+
 .meta-mime {
   font-size: 0.75rem;
   color: #666;
   margin-bottom: 1px;
 }
+
 .meta-others {
   display: flex;
   font-size: 0.75rem;
@@ -204,6 +272,7 @@ header {
   text-align: center;
   margin-top: 1rem;
 }
+
 .pagination button {
   background-color: var(--pagination-button-background);
   color: #fff;
@@ -215,9 +284,11 @@ header {
   font-size: 0.9rem;
   transition: background-color 0.3s ease;
 }
+
 .pagination button:hover {
   background-color: var(--pagination-button-hover);
 }
+
 .pagination button:disabled {
   background-color: #aaa;
   cursor: not-allowed;
@@ -231,14 +302,16 @@ header {
   left: 0;
   width: 100%;
   height: 100%;
-  background-color: rgba(0,0,0,0.5);
+  background-color: rgba(0, 0, 0, 0.5);
   z-index: 1000;
   justify-content: center;
   align-items: center;
 }
+
 .history-modal.active {
   display: flex;
 }
+
 .history-content {
   background-color: var(--result-background);
   color: var(--text-color);
@@ -249,6 +322,7 @@ header {
   width: 90%;
   max-width: 500px;
 }
+
 .download-history {
   padding: 0.5rem 0.75rem;
   font-size: 0.9rem;
@@ -260,22 +334,40 @@ header {
   margin-bottom: 10px;
   transition: background-color 0.3s ease;
 }
+
 .download-history:hover {
   background-color: var(--pagination-button-hover);
 }
 
-html, body {
+html,
+body {
   overflow-x: hidden;
 }
 
-/* Responsive Design */
+/* RESPONSIVE DESIGN */
 @media (max-width: 768px) {
+  .header-container {
+    flex-direction: column;
+    text-align: center;
+  }
+
+  .logo-title {
+    align-items: center;
+  }
+
+  .header-controls {
+    margin-top: 10px;
+    justify-content: center;
+  }
+
   header h1 {
     font-size: 1.5rem;
   }
+
   .search-bar input {
     width: 100%;
   }
+
   .result-item {
     padding: 6px;
   }
