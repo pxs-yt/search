@@ -90,7 +90,7 @@ header {
   transform: translateX(22px);
 }
 
-/* Search Bar and MIME Type Filter */
+/* Search Bar and Controls */
 .search-bar {
   display: flex;
   justify-content: center;
@@ -120,8 +120,6 @@ header {
   background: var(--result-background);
   color: var(--text-color);
 }
-
-/* History Button */
 #historyButton {
   padding: 0.5rem 0.75rem;
   font-size: 0.9rem;
@@ -134,6 +132,16 @@ header {
 }
 #historyButton:hover {
   background-color: var(--pagination-button-hover);
+}
+
+/* Adjust search bar layout on mobile */
+@media (max-width: 480px) {
+  .search-bar {
+    flex-direction: column;
+  }
+  #mimeFilter, #historyButton, .search-bar input {
+    width: 90%;
+  }
 }
 
 /* Total URLs Label */
@@ -156,7 +164,7 @@ header {
   padding: 1rem;
 }
 
-/* Search Result Item (more compact and efficient) */
+/* Search Result Item (compact layout) */
 .result-item {
   display: flex;
   align-items: center;
@@ -270,6 +278,20 @@ header {
 }
 .history-item:last-child {
   border-bottom: none;
+}
+.download-history {
+  padding: 0.5rem 0.75rem;
+  font-size: 0.9rem;
+  border: none;
+  border-radius: 5px;
+  background-color: var(--pagination-button-background);
+  color: #fff;
+  cursor: pointer;
+  margin-bottom: 10px;
+  transition: background-color 0.3s ease;
+}
+.download-history:hover {
+  background-color: var(--pagination-button-hover);
 }
 
 /* Responsive Design */
