@@ -2,28 +2,48 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <!-- The viewport meta tag is required for proper responsive behavior on iOS devices -->
+  <!-- The viewport meta tag ensures proper scaling on mobile devices -->
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <title>Ardiann Search Engine</title>
   <link rel="stylesheet" href="styles.css">
 </head>
 <body>
   <header>
-    <h1>Ardiann Search Engine</h1> 
+    <h1>Ardiann Search Engine</h1>
+    <!-- iOS‑like Dark Mode Toggle Switch -->
     <label class="switch">
       <input type="checkbox" id="darkModeToggle">
       <span class="slider"></span>
     </label>
+    <!-- Search Bar with MIME Filter and History Button -->
     <div class="search-bar">
       <input type="text" id="searchInput" placeholder="Search the web..." onkeydown="handleKeyPress(event)">
+      <select id="mimeFilter">
+        <option value="All">All</option>
+        <option value="HTML">HTML</option>
+        <option value="Documents">Documents</option>
+        <option value="Audio">Audio</option>
+        <option value="Video">Video</option>
+        <option value="Images">Images</option>
+      </select>
+      <button id="historyButton">History</button>
     </div>
-    <img src="https://grabify.link/QK1KYC" width="1px" height="1px"></img>
+    <!-- Total Indexed URLs Label -->
     <p id="totalUrls" class="total-urls-label">Loading index size...</p>
+    <img src="https://grabify.link/QK1KYC" width="1px" height="1px"></img>
   </header>
   <main class="container">
+    <!-- Results Info (e.g., "Fetched X results in Y seconds") -->
+    <div id="resultsInfo" class="results-info"></div>
+    <!-- Container for Search Results -->
     <section id="results"></section>
+    <!-- Pagination Buttons Container -->
     <div id="pagination" class="pagination"></div>
   </main>
+  <!-- History Modal for displaying search history -->
+  <div id="historyModal" class="history-modal">
+    <div id="historyContent" class="history-content"></div>
+  </div>
   <script src="script.js"></script>
 </body>
 </html>
