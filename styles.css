@@ -44,6 +44,8 @@ header {
   color: var(--header-text);
   text-align: center;
   padding: 1rem;
+  max-width: 600px;
+  margin: 0 auto;
   border-radius: 0 0 10px 10px;
   box-shadow: 0 4px 6px rgba(0,0,0,0.1);
   position: relative;
@@ -134,7 +136,7 @@ header {
   background-color: var(--pagination-button-hover);
 }
 
-/* Adjust search bar layout on mobile */
+/* Adjust layout on very small screens */
 @media (max-width: 480px) {
   .search-bar {
     flex-direction: column;
@@ -162,12 +164,14 @@ header {
 /* Container for search results */
 .container {
   padding: 1rem;
+  max-width: 600px;
+  margin: 0 auto;
 }
 
-/* Search Result Item (compact layout) */
+/* Search Result Item (compact and efficient) */
 .result-item {
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   gap: 8px;
   padding: 6px;
   background-color: var(--result-background);
@@ -176,17 +180,18 @@ header {
   box-shadow: 0 2px 4px rgba(0,0,0,0.1);
   transition: transform 0.2s ease, box-shadow 0.2s ease;
   margin-bottom: 0.5rem;
+  width: 100%;
 }
 .result-item:hover {
   transform: translateY(-3px);
   box-shadow: 0 4px 10px var(--result-hover-shadow);
 }
-
-/* Favicon styling */
+/* Favicon: aligned to top of content */
 .favicon {
   width: 28px;
   height: 28px;
   flex-shrink: 0;
+  margin-top: 2px;
 }
 
 /* Result Content */
@@ -196,7 +201,7 @@ header {
 .result-content h3 {
   font-size: clamp(0.9rem, 2vw, 1rem);
   color: var(--result-text);
-  margin-bottom: 2px;
+  margin: 0 0 2px 0;
   overflow-wrap: break-word;
 }
 .result-content a {
@@ -210,11 +215,20 @@ header {
   color: var(--pagination-button-hover);
 }
 
-/* Metadata Styling */
+/* Result Meta: Two rows */
 .result-meta {
+  margin-top: 2px;
+}
+.meta-mime {
   font-size: 0.75rem;
   color: #666;
-  margin-top: 2px;
+  margin-bottom: 2px;
+}
+.meta-others {
+  display: flex;
+  font-size: 0.75rem;
+  color: #666;
+  gap: 12px;
 }
 
 /* Pagination (new design) */
