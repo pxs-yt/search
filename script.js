@@ -1,9 +1,9 @@
 document.addEventListener("DOMContentLoaded", () => {
   fetchTotalUrls();
-  // Attach dark mode toggle event listener if the element exists
-  const toggleButton = document.getElementById("darkModeToggle");
-  if (toggleButton) {
-    toggleButton.addEventListener("click", toggleDarkMode);
+  // Attach event listener to the dark mode toggle switch (checkbox)
+  const darkModeToggle = document.getElementById("darkModeToggle");
+  if (darkModeToggle) {
+    darkModeToggle.addEventListener("change", toggleDarkMode);
   }
 });
 
@@ -31,18 +31,16 @@ function handleKeyPress(event) {
   }
 }
 
-// Toggle dark mode by adding/removing the "dark-mode" class on the body
-function toggleDarkMode() {
-  document.body.classList.toggle("dark-mode");
-  const toggleButton = document.getElementById("darkModeToggle");
-  if (document.body.classList.contains("dark-mode")) {
-    toggleButton.textContent = "Light Mode";
+// Toggle dark mode by adding or removing the "dark-mode" class on the body
+function toggleDarkMode(event) {
+  if (event.target.checked) {
+    document.body.classList.add("dark-mode");
   } else {
-    toggleButton.textContent = "Dark Mode";
+    document.body.classList.remove("dark-mode");
   }
 }
 
-// Perform the search by filtering the data from index.json
+// Perform the search by filtering data from index.json and measure time
 function performSearch() {
   const query = document.getElementById("searchInput").value.toLowerCase();
   const resultsContainer = document.getElementById("results");
@@ -53,6 +51,8 @@ function performSearch() {
     return;
   }
   
+  const startTime = performance.now();
+  
   fetch("index.json")
     .then(response => response.json())
     .then(data => {
@@ -60,6 +60,19 @@ function performSearch() {
         item.title.toLowerCase().includes(query) ||
         (item.description && item.description.toLowerCase().includes(query))
       );
+      
+      const endTime = performance.now();
+      const elapsed = ((endTime - startTime) / 1000).toFixed(2);
+      
+      // Display results info above the results container
+      let resultsInfo = document.getElementById("resultsInfo");
+      if (!resultsInfo) {
+        resultsInfo = document.createElement("p");
+        resultsInfo.id = "resultsInfo";
+        resultsInfo.className = "results-info";
+        resultsContainer.parentElement.insertBefore(resultsInfo, resultsContainer);
+      }
+      resultsInfo.textContent = `Fetched ${searchResults.length} results in ${elapsed} seconds.`;
       
       if (searchResults.length === 0) {
         resultsContainer.innerHTML = "<p>No results found.</p>";
@@ -88,7 +101,7 @@ function displayResults() {
     const resultItem = document.createElement("div");
     resultItem.className = "result-item";
     
-    // Extract the domain for the favicon using the URL API
+    // Extract the domain for the favicon
     let domain = "";
     try {
       const urlObj = new URL(result.url);
@@ -127,7 +140,7 @@ function adjustTitleFontSize(titleElement) {
   }
 }
 
-// Display pagination buttons in the following structure:
+// Display pagination buttons with the following structure:
 // [Back] [First] [Current] [Last] [Next]
 function displayPagination() {
   const paginationContainer = document.getElementById("pagination");
