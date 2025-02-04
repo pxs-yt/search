@@ -175,8 +175,8 @@ header {
 }
 
 .search-bar input {
-  width: 70%; /* Increased base width */
-  max-width: 500px; /* Increased max-width */
+  width: 95%; /* Extremely wide base width */
+  max-width: 900px; /* Increased max-width for larger screens */
   padding: 0.5rem;
   font-size: 1rem;
   border: 1px solid var(--input-border);
@@ -186,8 +186,8 @@ header {
 }
 
 .search-bar input:focus {
-  width: 80%; /* Wider width on focus */
-  max-width: 600px; /* Increased max-width on focus */
+  width: 98%; /* Even wider on focus */
+  max-width: 1000px; /* Increased max-width on focus */
   border-color: var(--header-background);
   box-shadow: 0 0 8px rgba(16, 21, 36, 0.2);
 }
