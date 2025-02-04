@@ -41,12 +41,20 @@ body {
   padding: 0;
 }
 
+/* Wrapper to leave a small margin on sides */
+.wrapper {
+  width: calc(100% - 20px);
+  margin: 0 auto;
+}
+
+/* Header */
 header {
   background-color: var(--header-background);
   color: var(--header-text);
   text-align: center;
   padding: 1rem;
-  width: 100%; /* Use full width */
+  width: 100%;
+  /* The wrapper takes care of side margins, so header remains 100% within it */
   border-radius: 0 0 10px 10px;
   box-shadow: 0 4px 6px rgba(0,0,0,0.1);
   position: relative;
@@ -100,8 +108,7 @@ header {
   align-items: center;
   gap: 10px;
   margin: 1rem 0;
-  width: 100%;
-  padding: 0 1rem;
+  padding: 0 10px;
 }
 .search-bar input {
   width: 60%;
@@ -164,7 +171,7 @@ header {
   margin: 10px 0;
 }
 
-/* Container for search results (full width) */
+/* Container for search results (full width with side margin via wrapper) */
 .container {
   padding: 1rem;
   width: 100%;
@@ -194,7 +201,7 @@ header {
   width: 28px;
   height: 28px;
   flex-shrink: 0;
-  margin-top: 2px; /* Already aligned higher */
+  margin-top: 2px;
 }
 
 /* Result Content */
