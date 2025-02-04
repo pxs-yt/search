@@ -50,7 +50,6 @@ header {
 }
 
 /* iOS‑like Dark Mode Toggle Switch */
-/* Use this markup in your HTML (see note below) */
 .switch {
   position: absolute;
   top: 10px;
@@ -91,27 +90,50 @@ header {
   transform: translateX(22px);
 }
 
-/* Search Bar */
+/* Search Bar and MIME Type Filter */
 .search-bar {
   display: flex;
   justify-content: center;
+  align-items: center;
+  gap: 10px;
   margin: 1rem 0;
 }
-
 .search-bar input {
-  width: 90%;
-  max-width: 600px;
-  padding: 0.75rem;
+  width: 60%;
+  max-width: 400px;
+  padding: 0.5rem;
   font-size: 1rem;
   border: 1px solid var(--input-border);
   border-radius: 25px;
   outline: none;
   transition: border-color 0.3s ease, box-shadow 0.3s ease;
 }
-
 .search-bar input:focus {
   border-color: var(--header-background);
   box-shadow: 0 0 8px rgba(16, 21, 36, 0.2);
+}
+#mimeFilter {
+  padding: 0.5rem;
+  font-size: 1rem;
+  border: 1px solid var(--input-border);
+  border-radius: 5px;
+  background: var(--result-background);
+  color: var(--text-color);
+}
+
+/* History Button */
+#historyButton {
+  padding: 0.5rem 0.75rem;
+  font-size: 0.9rem;
+  border: none;
+  border-radius: 5px;
+  background-color: var(--pagination-button-background);
+  color: #fff;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+#historyButton:hover {
+  background-color: var(--pagination-button-hover);
 }
 
 /* Total URLs Label */
@@ -122,7 +144,7 @@ header {
   margin-top: 5px;
 }
 
-/* Results Info */
+/* Results Info Message */
 .results-info {
   text-align: center;
   font-size: 0.9rem;
@@ -134,20 +156,19 @@ header {
   padding: 1rem;
 }
 
-/* Search result item box with favicon and structured layout */
+/* Search Result Item (more compact and efficient) */
 .result-item {
   display: flex;
   align-items: center;
-  gap: 12px;
-  padding: 8px;
+  gap: 8px;
+  padding: 6px;
   background-color: var(--result-background);
   border: 1px solid var(--result-border);
-  border-radius: 10px;
+  border-radius: 8px;
   box-shadow: 0 2px 4px rgba(0,0,0,0.1);
   transition: transform 0.2s ease, box-shadow 0.2s ease;
   margin-bottom: 0.5rem;
 }
-
 .result-item:hover {
   transform: translateY(-3px);
   box-shadow: 0 4px 10px var(--result-hover-shadow);
@@ -155,47 +176,44 @@ header {
 
 /* Favicon styling */
 .favicon {
-  width: 32px;
-  height: 32px;
+  width: 28px;
+  height: 28px;
   flex-shrink: 0;
 }
 
-/* Result content */
+/* Result Content */
 .result-content {
   flex-grow: 1;
 }
-
 .result-content h3 {
-  font-size: clamp(0.9rem, 2vw, 1.1rem);
+  font-size: clamp(0.9rem, 2vw, 1rem);
   color: var(--result-text);
-  margin-bottom: 3px;
+  margin-bottom: 2px;
   overflow-wrap: break-word;
 }
-
 .result-content a {
   color: var(--result-text);
   text-decoration: none;
   font-weight: bold;
+  font-size: 0.9rem; /* Smaller font for result link */
   display: block;
 }
-
 .result-content a:hover {
   color: var(--pagination-button-hover);
 }
 
-/* Metadata styling */
+/* Metadata Styling */
 .result-meta {
-  font-size: 0.8rem;
+  font-size: 0.75rem;
   color: #666;
-  margin-top: 5px;
+  margin-top: 2px;
 }
 
-/* Pagination - new design */
+/* Pagination (new design) */
 .pagination {
   text-align: center;
   margin-top: 1rem;
 }
-
 .pagination button {
   background-color: var(--pagination-button-background);
   color: #fff;
@@ -207,14 +225,51 @@ header {
   font-size: 0.9rem;
   transition: background-color 0.3s ease;
 }
-
 .pagination button:hover {
   background-color: var(--pagination-button-hover);
 }
-
 .pagination button:disabled {
   background-color: #aaa;
   cursor: not-allowed;
+}
+
+/* History Modal Styles */
+.history-modal {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0,0,0,0.5);
+  z-index: 1000;
+  justify-content: center;
+  align-items: center;
+}
+.history-modal.active {
+  display: flex;
+}
+.history-content {
+  background-color: var(--result-background);
+  color: var(--text-color);
+  padding: 20px;
+  border-radius: 10px;
+  max-height: 80%;
+  overflow-y: auto;
+  width: 90%;
+  max-width: 500px;
+}
+.history-content h2 {
+  margin-bottom: 10px;
+  font-size: 1.2rem;
+}
+.history-item {
+  border-bottom: 1px solid var(--result-border);
+  padding: 5px 0;
+  font-size: 0.85rem;
+}
+.history-item:last-child {
+  border-bottom: none;
 }
 
 /* Responsive Design */
