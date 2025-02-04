@@ -11,10 +11,14 @@
     <header>
       <div class="header-container">
         <div class="logo-title">
-          <h1>Search Engine</h1>
+          <h1>Ardiann Search Engine</h1>
           <p id="totalUrls" class="total-urls-label">Loading index size...</p>
         </div>
-    
+
+        <div class="">
+          <input type="text" id="searchInput" placeholder="Search the web..." onkeydown="handleKeyPress(event)">
+        </div>
+        
         <div class="header-controls">
           <label class="switch">
             <input type="checkbox" id="darkModeToggle">
