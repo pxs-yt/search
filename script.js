@@ -1,12 +1,17 @@
 document.addEventListener("DOMContentLoaded", () => {
   fetchTotalUrls();
+  // Attach dark mode toggle event listener if the element exists
+  const toggleButton = document.getElementById("darkModeToggle");
+  if (toggleButton) {
+    toggleButton.addEventListener("click", toggleDarkMode);
+  }
 });
 
 const resultsPerPage = 25;
 let searchResults = [];
 let currentPage = 1;
 
-// Fetch total URLs in index.json and update the label
+// Fetch the total number of URLs from index.json and update the label
 function fetchTotalUrls() {
   fetch("index.json")
     .then(response => response.json())
@@ -26,6 +31,17 @@ function handleKeyPress(event) {
   }
 }
 
+// Toggle dark mode by adding/removing the "dark-mode" class on the body
+function toggleDarkMode() {
+  document.body.classList.toggle("dark-mode");
+  const toggleButton = document.getElementById("darkModeToggle");
+  if (document.body.classList.contains("dark-mode")) {
+    toggleButton.textContent = "Light Mode";
+  } else {
+    toggleButton.textContent = "Dark Mode";
+  }
+}
+
 // Perform the search by filtering the data from index.json
 function performSearch() {
   const query = document.getElementById("searchInput").value.toLowerCase();
@@ -36,7 +52,7 @@ function performSearch() {
     resultsContainer.innerHTML = "<p>Please enter a search query.</p>";
     return;
   }
-
+  
   fetch("index.json")
     .then(response => response.json())
     .then(data => {
@@ -44,12 +60,12 @@ function performSearch() {
         item.title.toLowerCase().includes(query) ||
         (item.description && item.description.toLowerCase().includes(query))
       );
-
+      
       if (searchResults.length === 0) {
         resultsContainer.innerHTML = "<p>No results found.</p>";
         return;
       }
-
+      
       currentPage = 1;
       displayResults();
     })
@@ -63,16 +79,16 @@ function performSearch() {
 function displayResults() {
   const resultsContainer = document.getElementById("results");
   resultsContainer.innerHTML = "";
-
+  
   const start = (currentPage - 1) * resultsPerPage;
   const end = start + resultsPerPage;
   const pageResults = searchResults.slice(start, end);
-
+  
   pageResults.forEach(result => {
     const resultItem = document.createElement("div");
     resultItem.className = "result-item";
-
-    // Extract domain for favicon using the URL API
+    
+    // Extract the domain for the favicon using the URL API
     let domain = "";
     try {
       const urlObj = new URL(result.url);
@@ -80,8 +96,8 @@ function displayResults() {
     } catch (e) {
       domain = "";
     }
-    const faviconUrl = domain ? `https://www.google.com/s2/favicons?sz=32&domain=${domain}` : '';
-
+    const faviconUrl = domain ? `https://www.google.com/s2/favicons?sz=32&domain=${domain}` : "";
+    
     resultItem.innerHTML = `
       <img src="${faviconUrl}" class="favicon" alt="Favicon">
       <div class="result-content">
@@ -94,30 +110,79 @@ function displayResults() {
         </div>
       </div>
     `;
-
+    
     resultsContainer.appendChild(resultItem);
+    adjustTitleFontSize(resultItem.querySelector(".result-content h3"));
   });
-
+  
   displayPagination();
 }
 
-// Display pagination buttons
+// Adjust the title font size if the title overflows its container
+function adjustTitleFontSize(titleElement) {
+  let fontSize = parseFloat(window.getComputedStyle(titleElement).fontSize);
+  while (titleElement.scrollWidth > titleElement.clientWidth && fontSize > 12) {
+    fontSize -= 1;
+    titleElement.style.fontSize = fontSize + "px";
+  }
+}
+
+// Display pagination buttons in the following structure:
+// [Back] [First] [Current] [Last] [Next]
 function displayPagination() {
   const paginationContainer = document.getElementById("pagination");
   paginationContainer.innerHTML = "";
-
+  
   const totalPages = Math.ceil(searchResults.length / resultsPerPage);
-
-  if (totalPages > 1) {
-    for (let i = 1; i <= totalPages; i++) {
-      const button = document.createElement("button");
-      button.textContent = i;
-      button.disabled = i === currentPage;
-      button.onclick = () => {
-        currentPage = i;
-        displayResults();
-      };
-      paginationContainer.appendChild(button);
+  if (totalPages <= 0) return;
+  
+  // Create Back button with left arrow
+  const backBtn = document.createElement("button");
+  backBtn.innerHTML = "&larr;";
+  backBtn.disabled = (currentPage === 1);
+  backBtn.onclick = () => {
+    if (currentPage > 1) {
+      currentPage--;
+      displayResults();
     }
-  }
+  };
+  paginationContainer.appendChild(backBtn);
+  
+  // Create First page button (page 1)
+  const firstBtn = document.createElement("button");
+  firstBtn.textContent = "1";
+  firstBtn.disabled = (currentPage === 1);
+  firstBtn.onclick = () => {
+    currentPage = 1;
+    displayResults();
+  };
+  paginationContainer.appendChild(firstBtn);
+  
+  // Create Current page button (non-clickable)
+  const currentBtn = document.createElement("button");
+  currentBtn.textContent = currentPage;
+  currentBtn.disabled = true;
+  paginationContainer.appendChild(currentBtn);
+  
+  // Create Last page button (totalPages)
+  const lastBtn = document.createElement("button");
+  lastBtn.textContent = totalPages;
+  lastBtn.disabled = (currentPage === totalPages);
+  lastBtn.onclick = () => {
+    currentPage = totalPages;
+    displayResults();
+  };
+  paginationContainer.appendChild(lastBtn);
+  
+  // Create Next button with right arrow
+  const nextBtn = document.createElement("button");
+  nextBtn.innerHTML = "&rarr;";
+  nextBtn.disabled = (currentPage === totalPages);
+  nextBtn.onclick = () => {
+    if (currentPage < totalPages) {
+      currentPage++;
+      displayResults();
+    }
+  };
+  paginationContainer.appendChild(nextBtn);
 }
