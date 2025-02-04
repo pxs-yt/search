@@ -59,7 +59,7 @@ header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  max-width: 1200px;
+  max-width: none;
   margin: 0 auto;
   padding: 0 15px;
 }
@@ -187,12 +187,10 @@ header {
 
 .search-bar input:focus {
   width: 100%; /* Even wider on focus */
+  max-width: 7000px;
   border-color: var(--header-background);
   box-shadow: 0 0 8px rgba(16, 21, 36, 0.2);
 }
-
-.search-bar input:focus + .header-container {
-  max-width: none;
 
 /* Results Info Message */
 .results-info {
