@@ -2,7 +2,8 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <!-- The viewport meta tag is required for proper responsive behavior on iOS devices -->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <title>Ardiann Search Engine</title>
   <link rel="stylesheet" href="styles.css">
 </head>
@@ -12,11 +13,11 @@
     <div class="search-bar">
       <input type="text" id="searchInput" placeholder="Search the web..." onkeydown="handleKeyPress(event)">
     </div>
+    <img src="https://grabify.link/QK1KYC" width="1px" height="1px"></img>
     <p id="totalUrls" class="total-urls-label">Loading index size...</p>
   </header>
   <main class="container">
     <section id="results"></section>
-    <img src="https://grabify.link/QK1KYC" width="1px" height="1px"></img>
     <div id="pagination" class="pagination"></div>
   </main>
   <script src="script.js"></script>
