@@ -10,7 +10,10 @@
 <body>
   <header>
     <h1>Ardiann Search Engine</h1> 
-    <button id="darkModeToggle" class="dark-mode-toggle">Dark Mode</button>
+    <label class="switch">
+      <input type="checkbox" id="darkModeToggle">
+      <span class="slider"></span>
+    </label>
     <div class="search-bar">
       <input type="text" id="searchInput" placeholder="Search the web..." onkeydown="handleKeyPress(event)">
     </div>
