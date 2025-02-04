@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Ardiann Search Engine</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <header>
+    <h1>Ardiann Search Engine</h1>
+    <div class="search-bar">
+      <input type="text" id="searchInput" placeholder="Search the web..." onkeydown="handleKeyPress(event)">
+    </div>
+    <p id="totalUrls" class="total-urls-label">Loading index size...</p>
+  </header>
+  <main class="container">
+    <section id="results"></section>
+    <div id="pagination" class="pagination"></div>
+  </main>
+  <script src="script.js"></script>
+</body>
+</html>
