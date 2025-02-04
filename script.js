@@ -1,17 +1,96 @@
 document.addEventListener("DOMContentLoaded", () => {
   fetchTotalUrls();
-  // Attach event listener to the dark mode toggle switch (checkbox)
+  // Attach dark mode toggle event listener
   const darkModeToggle = document.getElementById("darkModeToggle");
   if (darkModeToggle) {
     darkModeToggle.addEventListener("change", toggleDarkMode);
   }
+  // Attach event listener to history button
+  const historyButton = document.getElementById("historyButton");
+  if (historyButton) {
+    historyButton.addEventListener("click", toggleHistoryModal);
+  }
+  // Close history modal when clicking outside the content
+  const historyModal = document.getElementById("historyModal");
+  if (historyModal) {
+    historyModal.addEventListener("click", (e) => {
+      if (e.target === historyModal) {
+        toggleHistoryModal();
+      }
+    });
 });
 
 const resultsPerPage = 25;
 let searchResults = [];
 let currentPage = 1;
 
-// Fetch the total number of URLs from index.json and update the label
+/* ========= Cookie Functions for Search History ========= */
+function setCookie(name, value, days) {
+  let expires = "";
+  if (days) {
+    const d = new Date();
+    d.setTime(d.getTime() + days*24*60*60*1000);
+    expires = "; expires=" + d.toUTCString();
+  }
+  document.cookie = name + "=" + (value || "") + expires + "; path=/";
+}
+function getCookie(name) {
+  const nameEQ = name + "=";
+  const ca = document.cookie.split(";");
+  for(let i = 0; i < ca.length; i++) {
+    let c = ca[i];
+    while (c.charAt(0) === " ") c = c.substring(1);
+    if (c.indexOf(nameEQ) === 0) return c.substring(nameEQ.length, c.length);
+  }
+  return null;
+}
+function saveSearchHistory(history) {
+  setCookie("searchHistory", JSON.stringify(history), 30);
+}
+function loadSearchHistory() {
+  const history = getCookie("searchHistory");
+  return history ? JSON.parse(history) : [];
+}
+function addSearchHistory(query) {
+  const history = loadSearchHistory();
+  history.push({ query: query, timestamp: new Date().toISOString() });
+  saveSearchHistory(history);
+}
+function addClickHistory(query, url) {
+  const history = loadSearchHistory();
+  history.push({ query: query, clickedUrl: url, timestamp: new Date().toISOString() });
+  saveSearchHistory(history);
+}
+function displayHistory() {
+  const historyModalContent = document.getElementById("historyContent");
+  const history = loadSearchHistory();
+  historyModalContent.innerHTML = "<h2>Search History</h2>";
+  if (history.length === 0) {
+    historyModalContent.innerHTML += "<p>No history available.</p>";
+    return;
+  }
+  history.forEach(item => {
+    const div = document.createElement("div");
+    div.className = "history-item";
+    if (item.query && !item.clickedUrl) {
+      div.textContent = `Query: "${item.query}" at ${new Date(item.timestamp).toLocaleString()}`;
+    } else if (item.clickedUrl) {
+      div.textContent = `Clicked: ${item.clickedUrl} (Query: "${item.query}") at ${new Date(item.timestamp).toLocaleString()}`;
+    }
+    historyModalContent.appendChild(div);
+  });
+}
+function toggleHistoryModal() {
+  const historyModal = document.getElementById("historyModal");
+  if (historyModal.classList.contains("active")) {
+    historyModal.classList.remove("active");
+  } else {
+    displayHistory();
+    historyModal.classList.add("active");
+  }
+}
+
+/* ========= Fetch Total URLs ========= */
 function fetchTotalUrls() {
   fetch("index.json")
     .then(response => response.json())
@@ -24,14 +103,13 @@ function fetchTotalUrls() {
     });
 }
 
-// Handle key press on the search input: trigger search on Enter key
+/* ========= Search Functionality ========= */
 function handleKeyPress(event) {
   if (event.key === "Enter") {
     performSearch();
   }
 }
 
-// Toggle dark mode by adding or removing the "dark-mode" class on the body
 function toggleDarkMode(event) {
   if (event.target.checked) {
     document.body.classList.add("dark-mode");
@@ -40,9 +118,9 @@ function toggleDarkMode(event) {
   }
 }
 
-// Perform the search by filtering data from index.json and measure time
 function performSearch() {
   const query = document.getElementById("searchInput").value.toLowerCase();
+  const mimeFilter = document.getElementById("mimeFilter").value;
   const resultsContainer = document.getElementById("results");
   resultsContainer.innerHTML = "";
   
@@ -52,19 +130,30 @@ function performSearch() {
   }
   
   const startTime = performance.now();
+  addSearchHistory(query);
   
   fetch("index.json")
     .then(response => response.json())
     .then(data => {
-      searchResults = data.filter(item =>
-        item.title.toLowerCase().includes(query) ||
-        (item.description && item.description.toLowerCase().includes(query))
-      );
+      // Filter results by query and MIME type
+      searchResults = data.filter(item => {
+        const matchesQuery = item.title.toLowerCase().includes(query) ||
+                             (item.description && item.description.toLowerCase().includes(query));
+        if (!matchesQuery) return false;
+        if (mimeFilter === "All") return true;
+        const mime = item.mime_type.toLowerCase();
+        if (mimeFilter === "HTML") return mime.startsWith("text/html");
+        if (mimeFilter === "Documents") return mime.includes("pdf") || mime.includes("msword") || mime.includes("vnd.openxmlformats-officedocument");
+        if (mimeFilter === "Audio") return mime.startsWith("audio/");
+        if (mimeFilter === "Video") return mime.startsWith("video/");
+        if (mimeFilter === "Images") return mime.startsWith("image/");
+        return true;
+      });
       
       const endTime = performance.now();
       const elapsed = ((endTime - startTime) / 1000).toFixed(2);
       
-      // Display results info above the results container
+      // Show results info
       let resultsInfo = document.getElementById("resultsInfo");
       if (!resultsInfo) {
         resultsInfo = document.createElement("p");
@@ -88,7 +177,7 @@ function performSearch() {
     });
 }
 
-// Display paginated search results
+/* ========= Display Results ========= */
 function displayResults() {
   const resultsContainer = document.getElementById("results");
   resultsContainer.innerHTML = "";
@@ -101,7 +190,6 @@ function displayResults() {
     const resultItem = document.createElement("div");
     resultItem.className = "result-item";
     
-    // Extract the domain for the favicon
     let domain = "";
     try {
       const urlObj = new URL(result.url);
@@ -115,7 +203,7 @@ function displayResults() {
       <img src="${faviconUrl}" class="favicon" alt="Favicon">
       <div class="result-content">
         <h3><a href="${result.url}" target="_blank">${result.title}</a></h3>
-        <p>${result.url}</p>
+        <p style="font-size:0.8rem;">${result.url}</p>
         <div class="result-meta">
           <p>MIME Type: ${result.mime_type}</p>
           <p>Images: ${result.image_count}</p>
@@ -124,6 +212,12 @@ function displayResults() {
       </div>
     `;
     
+    // Record click history when the result link is clicked
+    const linkElement = resultItem.querySelector("a");
+    linkElement.addEventListener("click", () => {
+      addClickHistory(document.getElementById("searchInput").value.toLowerCase(), result.url);
+    });
+    
     resultsContainer.appendChild(resultItem);
     adjustTitleFontSize(resultItem.querySelector(".result-content h3"));
   });
@@ -131,7 +225,7 @@ function displayResults() {
   displayPagination();
 }
 
-// Adjust the title font size if the title overflows its container
+/* ========= Adjust Title Font Size ========= */
 function adjustTitleFontSize(titleElement) {
   let fontSize = parseFloat(window.getComputedStyle(titleElement).fontSize);
   while (titleElement.scrollWidth > titleElement.clientWidth && fontSize > 12) {
@@ -140,8 +234,8 @@ function adjustTitleFontSize(titleElement) {
   }
 }
 
-// Display pagination buttons with the following structure:
-// [Back] [First] [Current] [Last] [Next]
+/* ========= Pagination ========= */
+/* Structure: [Back] [First] [Current] [Last] [Next] */
 function displayPagination() {
   const paginationContainer = document.getElementById("pagination");
   paginationContainer.innerHTML = "";
@@ -149,7 +243,6 @@ function displayPagination() {
   const totalPages = Math.ceil(searchResults.length / resultsPerPage);
   if (totalPages <= 0) return;
   
-  // Create Back button with left arrow
   const backBtn = document.createElement("button");
   backBtn.innerHTML = "&larr;";
   backBtn.disabled = (currentPage === 1);
@@ -161,7 +254,6 @@ function displayPagination() {
   };
   paginationContainer.appendChild(backBtn);
   
-  // Create First page button (page 1)
   const firstBtn = document.createElement("button");
   firstBtn.textContent = "1";
   firstBtn.disabled = (currentPage === 1);
@@ -171,13 +263,11 @@ function displayPagination() {
   };
   paginationContainer.appendChild(firstBtn);
   
-  // Create Current page button (non-clickable)
   const currentBtn = document.createElement("button");
   currentBtn.textContent = currentPage;
   currentBtn.disabled = true;
   paginationContainer.appendChild(currentBtn);
   
-  // Create Last page button (totalPages)
   const lastBtn = document.createElement("button");
   lastBtn.textContent = totalPages;
   lastBtn.disabled = (currentPage === totalPages);
@@ -187,7 +277,6 @@ function displayPagination() {
   };
   paginationContainer.appendChild(lastBtn);
   
-  // Create Next button with right arrow
   const nextBtn = document.createElement("button");
   nextBtn.innerHTML = "&rarr;";
   nextBtn.disabled = (currentPage === totalPages);
