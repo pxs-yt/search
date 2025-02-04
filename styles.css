@@ -175,8 +175,8 @@ header {
 }
 
 .search-bar input {
-  width: 90%;
-  max-width: 1000px;
+  width: 100%;
+  max-width: 8000px;
   padding: 0.5rem;
   font-size: 1rem;
   border: 1px solid var(--input-border);
@@ -188,7 +188,6 @@ header {
 .search-bar input:focus {
   border-color: var(--header-background);
   box-shadow: 0 0 8px rgba(16, 21, 36, 0.2);
-  width: 100%;
 }
 
 /* Results Info Message */
