@@ -187,10 +187,12 @@ header {
 
 .search-bar input:focus {
   width: 100%; /* Even wider on focus */
-  max-width: 4200px; /* Increased max-width on focus */
   border-color: var(--header-background);
   box-shadow: 0 0 8px rgba(16, 21, 36, 0.2);
 }
+
+.search-bar input:focus + .header-container {
+  max-width: none;
 
 /* Results Info Message */
 .results-info {
