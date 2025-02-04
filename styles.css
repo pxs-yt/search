@@ -187,7 +187,7 @@ header {
 
 .search-bar input:focus {
   width: 100%; /* Even wider on focus */
-  max-width: 7000px;
+  max-width: none;
   border-color: var(--header-background);
   box-shadow: 0 0 8px rgba(16, 21, 36, 0.2);
 }
