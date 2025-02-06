@@ -1,68 +1,43 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <!-- Responsive meta tag -->
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>ArdiannSearch</title>
-  <link rel="stylesheet" href="styles.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ArdiannSearch</title>
+    <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-  <!-- Wrapper for overall page content -->
-  <div class="wrapper">
-    <!-- Header Section -->
     <header>
-      <div class="top-header">
-        <div class="brand">
-          <h1>ArdiannSearch</h1>
-          <p id="totalUrls" class="total-urls-label">Loading index size...</p>
-          <img src="https://grabify.link/QK1KYC" width="1px" height="1px"></img>
+        <div class="container">
+            <h1>ArdiannSearch</h1>
+            <div class="controls">
+                <select id="mimeFilter">
+                    <option value="all">All MIME Types</option>
+                    <option value="text/html">HTML</option>
+                    <option value="application/pdf">PDF</option>
+                </select>
+                <button id="historyButton">History</button>
+                <label class="switch">
+                    <input type="checkbox" id="darkModeToggle">
+                    <span class="slider"></span>
+                </label>
+            </div>
         </div>
-        <div class="controls">
-          <!-- Dark Mode Toggle (iOS-like) -->
-          <label class="switch">
-            <input type="checkbox" id="darkModeToggle">
-            <span class="slider"></span>
-          </label>
-          <!-- MIME Type Filter Dropdown -->  
-          <select id="mimeFilter">
-            <option value="">All Types</option>
-            <option value="text/html">Web Pages (HTML)</option>
-            <option value="application/pdf">PDF Documents</option>
-            <option value="image/">Images</option>
-            <option value="video/">Videos</option>
-            <option value="audio/">Audio Files</option>
-          </select>
-          <!-- History Button -->  
-          <button id="historyButton">History</button>
-        </div>
-      </div>
-      <!-- Search Bar Row -->  
-      <div class="search-bar-container">
-        <input type="text" id="searchInput" placeholder="Enter your query and hit Enter..." onkeydown="handleKeyPress(event)">
-      </div>
     </header>
-
-    <!-- Main Content -->
-    <main class="container">
-      <!-- Results Info (e.g., "Fetched X results in Y seconds") -->  
-      <div id="resultsInfo" class="results-info"></div>
-      <!-- Search Results -->  
-      <section id="results"></section>
-      <!-- Pagination Controls -->  
-      <div id="pagination" class="pagination"></div>
+    <main>
+        <div class="search-container">
+            <input type="text" id="searchInput" placeholder="Search...">
+        </div>
+        <div id="results"></div>
     </main>
-
-    <!-- History Modal with Download Button -->
-    <div id="historyModal" class="history-modal">
-      <div class="history-content">
-        <button id="downloadHistory" class="download-history">Download History</button>
-        <h2>Search History</h2>
-        <div id="historyContent"></div>
-        <button id="closeHistory" class="close-history">Close</button>
-      </div>
+    <div id="historyModal" class="modal">
+        <div class="modal-content">
+            <h2>Search History</h2>
+            <button id="closeHistory">Close</button>
+            <button id="downloadHistory">Download</button>
+            <ul id="historyList"></ul>
+        </div>
     </div>
-  </div>
-  <script src="script.js"></script>
+    <script src="script.js"></script>
 </body>
 </html>
