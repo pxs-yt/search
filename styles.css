@@ -31,26 +31,37 @@ body.dark-mode {
   --pagination-button-hover: #555;
 }
 
+html, body {
+  margin: 0;
+  padding: 0;
+  overflow-x: hidden; /* Block horizontal scrolling */
+}
+
 body {
   font-family: 'Poppins', sans-serif;
   background-color: var(--background-color);
   color: var(--text-color);
   line-height: 1.6;
   transition: background-color 0.3s ease, color 0.3s ease;
-  margin: 0;
-  padding: 0;
   width: 100%;
+}
+
+/* Wrapper: Ensures equal left/right spacing on all screen sizes */
+.wrapper {
+  max-width: 1200px;
+  width: calc(100% - 40px);  /* 20px padding each side */
+  margin: 0 auto;
+  padding-left: 20px;
+  padding-right: 20px;
 }
 
 /* HEADER STYLING */
 header {
   background-color: var(--header-background);
   color: var(--header-text);
-  text-align: center;
+  padding: 15px;
   width: 100%;
-  padding: 1rem;
-  border-radius: 0 0 10px 10px;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 4px 6px rgba(0,0,0,0.1);
   position: relative;
 }
 
@@ -59,36 +70,72 @@ header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  max-width: none;
-  margin: 0 auto;
-  padding: 0 15px;
+  flex-wrap: wrap;
 }
 
-/* Logo & Title */
-.logo-title {
+/* Header Left (Logo & Total URLs) */
+.header-left {
   display: flex;
   flex-direction: column;
   align-items: flex-start;
 }
 
-/* Search Engine Title */
-.logo-title h1 {
+.logo-title {
   font-size: 1.5rem;
   margin: 0;
 }
 
-/* Total URLs Label */
 .total-urls-label {
   font-size: 0.85rem;
   color: #bbb;
   margin-top: 4px;
 }
 
-/* Header Controls (Dark Mode, Filter, History Button) */
-.header-controls {
+/* Header Right (Controls) */
+.header-right {
   display: flex;
   align-items: center;
   gap: 10px;
+  margin-top: 10px;
+}
+
+/* Dark Mode Toggle (iOS‑like Switch) */
+.switch {
+  display: inline-block;
+  width: 50px;
+  height: 28px;
+  position: relative;
+}
+.switch input {
+  display: none;
+}
+.slider {
+  position: absolute;
+  cursor: pointer;
+  background-color: #ccc;
+  border-radius: 34px;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  transition: 0.4s;
+}
+.slider:before {
+  position: absolute;
+  content: "";
+  height: 22px;
+  width: 22px;
+  left: 3px;
+  bottom: 3px;
+  background-color: white;
+  border-radius: 50%;
+  transition: 0.4s;
+}
+.switch input:checked + .slider {
+  background-color: var(--pagination-button-background);
+}
+.switch input:checked + .slider:before {
+  transform: translateX(22px);
 }
 
 /* MIME Type Dropdown */
@@ -111,85 +158,40 @@ header {
   color: #fff;
   cursor: pointer;
   transition: background-color 0.3s ease;
-  font-family: 'Poppins', sans-serif;
 }
-
 #historyButton:hover {
   background-color: var(--pagination-button-hover);
 }
 
-/* iOS‑like Dark Mode Toggle Switch */
-.switch {
-  position: absolute;
-  top: 10px;
-  right: 10px;
-  display: inline-block;
-  width: 50px;
-  height: 28px;
-}
-
-.switch input {
-  display: none;
-}
-
-.slider {
-  position: absolute;
-  cursor: pointer;
-  background-color: #ccc;
-  border-radius: 34px;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  transition: .4s;
-}
-
-.slider:before {
-  position: absolute;
-  content: "";
-  height: 22px;
-  width: 22px;
-  left: 3px;
-  bottom: 3px;
-  background-color: white;
-  border-radius: 50%;
-  transition: .4s;
-}
-
-.switch input:checked + .slider {
-  background-color: var(--pagination-button-background);
-}
-
-.switch input:checked + .slider:before {
-  transform: translateX(22px);
-}
-
-/* Search Bar and Controls */
-.search-bar {
+/* Search Bar Container (Below Header Controls) */
+.search-bar-container {
   display: flex;
   justify-content: center;
-  align-items: center;
-  gap: 10px;
-  margin: 1rem 0;
-  padding: 0 10px;
+  margin-top: 15px;
 }
-
-.search-bar input {
-  width: 80%; /* Extremely wide base width */
-  max-width: 850px; /* Increased max-width for larger screens */
-  padding: 0.5rem;
+.search-bar-container input {
+  width: 100%;
+  max-width: 600px;
+  padding: 0.75rem;
   font-size: 1rem;
   border: 1px solid var(--input-border);
   border-radius: 25px;
   outline: none;
-  transition: width 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease; /* Smooth transition for width */
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
 }
-
-.search-bar input:focus {
-  width: 100%; /* Even wider on focus */
-  max-width: none;
+.search-bar-container input:focus {
   border-color: var(--header-background);
   box-shadow: 0 0 8px rgba(16, 21, 36, 0.2);
+}
+
+/* Responsive Header Adjustments */
+@media (max-width: 768px) {
+  .header-container {\n    flex-direction: column;\n    text-align: center;\n  }\n  .header-left, .header-right {\n    align-items: center;\n  }\n  .header-right {\n    margin-top: 10px;\n    justify-content: center;\n  }\n}
+
+/* Main Container */
+.container {
+  padding: 1rem 0;
+  width: 100%;
 }
 
 /* Results Info Message */
@@ -208,18 +210,17 @@ header {
   background-color: var(--result-background);
   border: 1px solid var(--result-border);
   border-radius: 8px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
   transition: transform 0.2s ease, box-shadow 0.2s ease;
   margin-bottom: 0.5rem;
   width: 100%;
 }
-
 .result-item:hover {
   transform: translateY(-3px);
   box-shadow: 0 4px 10px var(--result-hover-shadow);
 }
 
-/* Favicon styling */
+/* Favicon */
 .favicon {
   width: 28px;
   height: 28px;
@@ -231,14 +232,12 @@ header {
 .result-content {
   flex-grow: 1;
 }
-
 .result-content h3 {
   font-size: clamp(0.9rem, 2vw, 1rem);
   color: var(--result-text);
-  margin: 0 0 2px 0; /* Reduced vertical spacing */
+  margin: 0 0 2px 0;
   overflow-wrap: break-word;
 }
-
 .result-content a {
   color: var(--result-text);
   text-decoration: none;
@@ -246,23 +245,20 @@ header {
   font-size: 0.9rem;
   display: block;
 }
-
 .result-content a:hover {
   color: var(--pagination-button-hover);
 }
 
-/* Result Meta */
+/* Result Meta (Two Rows) */
 .result-meta {
   margin-top: 2px;
   line-height: 1.2;
 }
-
 .meta-mime {
   font-size: 0.75rem;
   color: #666;
   margin-bottom: 1px;
 }
-
 .meta-others {
   display: flex;
   font-size: 0.75rem;
@@ -275,7 +271,6 @@ header {
   text-align: center;
   margin-top: 1rem;
 }
-
 .pagination button {
   background-color: var(--pagination-button-background);
   color: #fff;
@@ -287,11 +282,9 @@ header {
   font-size: 0.9rem;
   transition: background-color 0.3s ease;
 }
-
 .pagination button:hover {
   background-color: var(--pagination-button-hover);
 }
-
 .pagination button:disabled {
   background-color: #aaa;
   cursor: not-allowed;
@@ -305,78 +298,45 @@ header {
   left: 0;
   width: 100%;
   height: 100%;
-  background-color: rgba(0, 0, 0, 0.5);
+  background-color: rgba(0,0,0,0.5);
   z-index: 1000;
   justify-content: center;
   align-items: center;
 }
-
 .history-modal.active {
   display: flex;
 }
+.history-content {\n  background-color: var(--result-background);\n  color: var(--text-color);\n  padding: 20px;\n  border-radius: 10px;\n  max-height: 80%;\n  overflow-y: auto;\n  width: 90%;\n  max-width: 500px;\n}
+.download-history {\n  padding: 0.5rem 0.75rem;\n  font-size: 0.9rem;\n  border: none;\n  border-radius: 5px;\n  background-color: var(--pagination-button-background);\n  color: #fff;\n  cursor: pointer;\n  margin-bottom: 10px;\n  transition: background-color 0.3s ease;\n}\n.download-history:hover {\n  background-color: var(--pagination-button-hover);\n}
 
-.history-content {
-  background-color: var(--result-background);
-  color: var(--text-color);
-  padding: 20px;
-  border-radius: 10px;
-  max-height: 80%;
-  overflow-y: auto;
-  width: 90%;
-  max-width: 500px;
-}
-
-.download-history {
-  padding: 0.5rem 0.75rem;
-  font-size: 0.9rem;
-  border: none;
-  border-radius: 5px;
-  background-color: var(--pagination-button-background);
-  color: #fff;
-  cursor: pointer;
-  margin-bottom: 10px;
-  transition: background-color 0.3s ease;
-}
-
-.download-history:hover {
-  background-color: var(--pagination-button-hover);
-}
-
-html,
-body {
-  overflow-x: hidden;
-}
-
-/* RESPONSIVE DESIGN */
+/* Responsive Design */
 @media (max-width: 768px) {
+  .wrapper {
+    width: calc(100% - 40px);
+    padding: 0 20px;  
+  }  
   .header-container {
     flex-direction: column;
     text-align: center;
-  }
-
-  .logo-title {
+  }  
+  .header-left, .header-right {
     align-items: center;
-  }
-
-  .header-controls {
+  }  
+  .header-right {
     margin-top: 10px;
     justify-content: center;
+  }  
+  .search-bar-container input {
+    width: 100%;
   }
-
-  header h1 {
-    font-size: 1.5rem;
-  }
-
-  .search-bar input {
-    width: 90%; /* Full width on smaller screens */
-    max-width: none; /* Remove max-width restriction */
-  }
-
-  .search-bar input:focus {
-    width: 100%; /* Full width on focus */
-  }
-
   .result-item {
-    padding: 6px;
+    flex-direction: column;
   }
 }
+@media (max-width: 480px) {
+  .search-bar-container input {
+    font-size: 0.9rem;
+    padding: 0.6rem;
+  }
+}
+
