@@ -1,40 +1,45 @@
 /* Import Google Fonts */
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap');
 
-/* Define CSS variables for light mode */
+/* ==================== */
+/*      Variables       */
+/* ==================== */
 :root {
   --background-color: #f8f5f2;
-  --text-color: #000;
-  --header-background: #101524;
+  --text-color: #333;
+  --header-background: #1a1a1a;
   --header-text: #fff;
-  --input-border: #6b759733;
+  --input-border: #aaa;
   --result-background: #fff;
-  --result-border: #e3cccbb3;
-  --result-text: #101524;
+  --result-border: #ddd;
+  --result-text: #1a1a1a;
   --result-hover-shadow: rgba(0, 0, 0, 0.15);
-  --pagination-button-background: #101524;
-  --pagination-button-hover: #455273;
+  --button-bg: #1a1a1a;
+  --button-hover: #555;
 }
 
-/* Dark mode overrides */
+/* Dark Mode Variables */
 body.dark-mode {
-  --background-color: #181818;
+  --background-color: #121212;
   --text-color: #e0e0e0;
-  --header-background: #202020;
-  --header-text: #f8f5f2;
+  --header-background: #333;
+  --header-text: #f8f8f8;
   --input-border: #555;
-  --result-background: #2c2c2c;
+  --result-background: #1e1e1e;
   --result-border: #444;
   --result-text: #e0e0e0;
   --result-hover-shadow: rgba(0, 0, 0, 0.5);
-  --pagination-button-background: #202020;
-  --pagination-button-hover: #555;
+  --button-bg: #333;
+  --button-hover: #666;
 }
 
+/* ==================== */
+/* Global Styles        */
+/* ==================== */
 html, body {
   margin: 0;
   padding: 0;
-  overflow-x: hidden; /* Block horizontal scrolling */
+  overflow-x: hidden;
 }
 
 body {
@@ -46,78 +51,73 @@ body {
   width: 100%;
 }
 
-/* Wrapper: Ensures equal left/right spacing on all screen sizes */
+/* Wrapper to constrain content with equal left/right margins */
 .wrapper {
   max-width: 1200px;
-  width: calc(100% - 40px);  /* 20px padding each side */
+  width: calc(100% - 40px);
   margin: 0 auto;
-  padding-left: 20px;
-  padding-right: 20px;
+  padding: 0 20px;
 }
 
-/* HEADER STYLING */
+/* ==================== */
+/* Header Section       */
+/* ==================== */
 header {
   background-color: var(--header-background);
   color: var(--header-text);
-  padding: 15px;
+  padding: 20px 0;
   width: 100%;
   box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-  position: relative;
 }
 
-/* Header Container */
-.header-container {
+/* Top Header Row: Contains brand and control elements */
+.top-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
   flex-wrap: wrap;
 }
 
-/* Header Left (Logo & Total URLs) */
+/* Left side: Brand (Logo and Total URLs) */
 .header-left {
   display: flex;
   flex-direction: column;
   align-items: flex-start;
 }
-
-.logo-title {
-  font-size: 1.5rem;
+.header-left h1 {
+  font-size: 1.8rem;
   margin: 0;
 }
-
 .total-urls-label {
   font-size: 0.85rem;
-  color: #bbb;
-  margin-top: 4px;
+  color: #ccc;
+  margin-top: 5px;
 }
 
-/* Header Right (Controls) */
+/* Right side: Controls */
 .header-right {
   display: flex;
   align-items: center;
   gap: 10px;
   margin-top: 10px;
 }
-
-/* Dark Mode Toggle (iOS‑like Switch) */
 .switch {
-  display: inline-block;
   width: 50px;
   height: 28px;
   position: relative;
+  display: inline-block;
 }
 .switch input {
   display: none;
 }
 .slider {
   position: absolute;
-  cursor: pointer;
-  background-color: #ccc;
-  border-radius: 34px;
   top: 0;
   left: 0;
   right: 0;
   bottom: 0;
+  background-color: #ccc;
+  border-radius: 34px;
   transition: 0.4s;
 }
 .slider:before {
@@ -132,13 +132,11 @@ header {
   transition: 0.4s;
 }
 .switch input:checked + .slider {
-  background-color: var(--pagination-button-background);
+  background-color: var(--button-bg);
 }
 .switch input:checked + .slider:before {
   transform: translateX(22px);
 }
-
-/* MIME Type Dropdown */
 #mimeFilter {
   padding: 5px 10px;
   font-size: 0.9rem;
@@ -147,27 +145,24 @@ header {
   background: var(--result-background);
   color: var(--text-color);
 }
-
-/* History Button */
 #historyButton {
   padding: 5px 12px;
   font-size: 0.9rem;
   border: none;
   border-radius: 5px;
-  background-color: var(--pagination-button-background);
-  color: #fff;
+  background-color: var(--button-bg);
+  color: var(--header-text);
   cursor: pointer;
   transition: background-color 0.3s ease;
 }
 #historyButton:hover {
-  background-color: var(--pagination-button-hover);
+  background-color: var(--button-hover);
 }
 
-/* Search Bar Container (Below Header Controls) */
+/* Search Bar Row */
 .search-bar-container {
-  display: flex;
-  justify-content: center;
-  margin-top: 15px;
+  margin-top: 20px;
+  text-align: center;
 }
 .search-bar-container input {
   width: 100%;
@@ -184,14 +179,27 @@ header {
   box-shadow: 0 0 8px rgba(16, 21, 36, 0.2);
 }
 
-/* Responsive Header Adjustments */
+/* Responsive Header: Stack controls on smaller screens */
 @media (max-width: 768px) {
-  .header-container {\n    flex-direction: column;\n    text-align: center;\n  }\n  .header-left, .header-right {\n    align-items: center;\n  }\n  .header-right {\n    margin-top: 10px;\n    justify-content: center;\n  }\n}
+  .top-header {
+    flex-direction: column;
+    text-align: center;
+  }
+  .header-right {
+    justify-content: center;
+    margin-top: 10px;
+  }
+  .header-left {
+    align-items: center;
+  }
+}
 
-/* Main Container */
+/* ==================== */
+/* Main Content         */
+/* ==================== */
 .container {
-  padding: 1rem 0;
   width: 100%;
+  padding: 20px 0;
 }
 
 /* Results Info Message */
@@ -201,7 +209,9 @@ header {
   margin: 10px 0;
 }
 
-/* Search Result Item */
+/* ==================== */
+/* Search Result Items  */
+/* ==================== */
 .result-item {
   display: flex;
   align-items: flex-start;
@@ -219,16 +229,12 @@ header {
   transform: translateY(-3px);
   box-shadow: 0 4px 10px var(--result-hover-shadow);
 }
-
-/* Favicon */
 .favicon {
   width: 28px;
   height: 28px;
   flex-shrink: 0;
   margin-top: 2px;
 }
-
-/* Result Content */
 .result-content {
   flex-grow: 1;
 }
@@ -246,10 +252,8 @@ header {
   display: block;
 }
 .result-content a:hover {
-  color: var(--pagination-button-hover);
+  color: var(--button-hover);
 }
-
-/* Result Meta (Two Rows) */
 .result-meta {
   margin-top: 2px;
   line-height: 1.2;
@@ -266,14 +270,16 @@ header {
   gap: 12px;
 }
 
-/* Pagination */
+/* ==================== */
+/* Pagination Controls  */
+/* ==================== */
 .pagination {
   text-align: center;
   margin-top: 1rem;
 }
 .pagination button {
-  background-color: var(--pagination-button-background);
-  color: #fff;
+  background-color: var(--button-bg);
+  color: var(--header-text);
   border: none;
   padding: 8px 12px;
   margin: 2px;
@@ -283,14 +289,16 @@ header {
   transition: background-color 0.3s ease;
 }
 .pagination button:hover {
-  background-color: var(--pagination-button-hover);
+  background-color: var(--button-hover);
 }
 .pagination button:disabled {
   background-color: #aaa;
   cursor: not-allowed;
 }
 
-/* History Modal */
+/* ==================== */
+/* History Modal        */
+/* ==================== */
 .history-modal {
   display: none;
   position: fixed;
@@ -306,26 +314,61 @@ header {
 .history-modal.active {
   display: flex;
 }
-.history-content {\n  background-color: var(--result-background);\n  color: var(--text-color);\n  padding: 20px;\n  border-radius: 10px;\n  max-height: 80%;\n  overflow-y: auto;\n  width: 90%;\n  max-width: 500px;\n}
-.download-history {\n  padding: 0.5rem 0.75rem;\n  font-size: 0.9rem;\n  border: none;\n  border-radius: 5px;\n  background-color: var(--pagination-button-background);\n  color: #fff;\n  cursor: pointer;\n  margin-bottom: 10px;\n  transition: background-color 0.3s ease;\n}\n.download-history:hover {\n  background-color: var(--pagination-button-hover);\n}
+.history-content {
+  background-color: var(--result-background);
+  color: var(--text-color);
+  padding: 20px;
+  border-radius: 10px;
+  max-height: 80%;
+  overflow-y: auto;
+  width: 90%;
+  max-width: 500px;
+}
+.history-content h2 {
+  margin-bottom: 10px;
+  font-size: 1.2rem;
+}
+.history-item {
+  border-bottom: 1px solid var(--result-border);
+  padding: 5px 0;
+  font-size: 0.85rem;
+}
+.history-item:last-child {
+  border-bottom: none;
+}
+.download-history {
+  padding: 0.5rem 0.75rem;
+  font-size: 0.9rem;
+  border: none;
+  border-radius: 5px;
+  background-color: var(--button-bg);
+  color: var(--header-text);
+  cursor: pointer;
+  margin-bottom: 10px;
+  transition: background-color 0.3s ease;
+}
+.download-history:hover {
+  background-color: var(--button-hover);
+}
 
-/* Responsive Design */
+/* ==================== */
+/* Responsive Adjustments */ 
 @media (max-width: 768px) {
   .wrapper {
     width: calc(100% - 40px);
-    padding: 0 20px;  
-  }  
+    padding: 0 20px;
+  }
   .header-container {
     flex-direction: column;
     text-align: center;
-  }  
+  }
   .header-left, .header-right {
     align-items: center;
-  }  
+  }
   .header-right {
     margin-top: 10px;
     justify-content: center;
-  }  
+  }
   .search-bar-container input {
     width: 100%;
   }
@@ -339,4 +382,3 @@ header {
     padding: 0.6rem;
   }
 }
-
